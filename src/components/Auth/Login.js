@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useHistory } from "react-router";
 import { loginFields } from "../../constants/formFields";
 import FormAction from "./FormAction";
 import FormExtra from "./FormExtra";
 import Input from "./Input";
+import app from "../Firebase/base";
+import { AuthContext } from "../Firebase/Auth"
 
 const fields = loginFields;
 let fieldsState = {};
@@ -18,35 +20,57 @@ export default function Login() {
         setLoginState({ ...loginState, [e.target.id]: e.target.value })
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     history.push("/");
+    //     // authenticateUser();
+    // }
+
+    const handleSubmit = useCallback(
+        async event => {
+            event.preventDefault();
+            const { email, password } = event.target.elements;
+            try {
+                await app
+                    .auth()
+                    .signInWithEmailAndPassword(email.value, password.value);
+                history.push("/");
+            } catch (error) {
+                alert(error);
+            }
+        },
+        [history]
+    );
+
+    const { currentUser } = useContext(AuthContext);
+
+    if (currentUser) {
         history.push("/");
-        // authenticateUser();
     }
 
     //Handle Login API Integration here
-    const authenticateUser = () => {
+    // const authenticateUser = () => {
 
 
-        // let loginFields={
-        //         email:loginState['email-address'],
-        //         password:loginState['password']
-        // };
+    //     // let loginFields={
+    //     //         email:loginState['email-address'],
+    //     //         password:loginState['password']
+    //     // };
 
-        // const endpoint=`https://api.loginradius.com/identity/v2/auth/login?apikey=${apiKey}&apisecret=${apiSecret}`;
-        //  fetch(endpoint,
-        //      {
-        //      method:'POST',
-        //      headers: {
-        //      'Content-Type': 'application/json'
-        //      },
-        //      body:JSON.stringify(loginFields)
-        //      }).then(response=>response.json())
-        //      .then(data=>{
-        //         //API Success from LoginRadius Login API
-        //      })
-        //      .catch(error=>console.log(error))
-    }
+    //     // const endpoint=`https://api.loginradius.com/identity/v2/auth/login?apikey=${apiKey}&apisecret=${apiSecret}`;
+    //     //  fetch(endpoint,
+    //     //      {
+    //     //      method:'POST',
+    //     //      headers: {
+    //     //      'Content-Type': 'application/json'
+    //     //      },
+    //     //      body:JSON.stringify(loginFields)
+    //     //      }).then(response=>response.json())
+    //     //      .then(data=>{
+    //     //         //API Success from LoginRadius Login API
+    //     //      })
+    //     //      .catch(error=>console.log(error))
+    // }
 
 
     return (

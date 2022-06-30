@@ -51,20 +51,20 @@ function Home() {
         <div className="bg-gray-800 flex items-center justify-center w-screen h-screen py-10">
             <div className="flex w-3/4 min-h-full rounded-3xl shadow-lg m-auto bg-gray-100">
                 {/* form card section  */}
-                <div className="form-container">
+                <div className="form-container p-5">
                     <div className="flex items-center justify-center">
-                        <h3 className="my-auto mr-auto text-xl text-pink-800 font-bold shadow-md py-1 px-3 
-            rounded-md bg-white bg-opacity-30">forecast</h3>
-                        <div className="flex p-2 text-gray-100 bg-gray-600 bg-opacity-30 rounded-lg">
+                        <h3 className="my-auto mr-auto text-xl text-pink-800 font-bold shadow-md py-1 px-3 rounded-md bg-white bg-opacity-30">forecast</h3>
+                        <div className="flex p-3 text-gray-100 bg-gray-200 bg-opacity-30 rounded-lg">
                             <i className="fa fa-map my-auto" aria-hidden="true"></i>
-                            <div className="text-right">
-                                <p className="font-semibold text-sm ml-2">{city}</p>
+                            <div className="text-left">
+                                <p className="text-xs ml-2">Current location</p>
+                                <p className="font-semibold text-md ml-2">{city}</p>
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-col items-center justify-center h-full">
-                        <h1 className="text-white text-2xl">The Only Weather Forecast You Need</h1>
-                        <hr className="h-1 bg-white w-1/4 rounded-full my-5" />
+                        <h1 className="text-white text-2xl mb-8">The Only Weather Forecast You Need</h1>
+                        {/* <hr className="h-1 bg-white w-1/4 rounded-full my-5" /> */}
                         <form noValidate onSubmit={handleSubmit} className="flex justify-center w-full">
                             <input type="text"
                                 placeholder="Enter location"
@@ -82,9 +82,9 @@ function Home() {
                     </div>
                 </div>
                 {/* info card section  */}
-                <div className="w-2/4 p-5">
+                <div className="w-2/4">
                     <Header />
-                    <div className="flex flex-col my-10">
+                    <div className="flex flex-col my-10 p-5">
                         {/* card jsx  */}
                         {weatherData.length === 0 ?
                             <div className="container p-4 flex items-center justify-center h-1/3 mb-auto">

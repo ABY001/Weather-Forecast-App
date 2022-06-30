@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { signupFields } from "../../constants/formFields"
 import FormAction from "./FormAction";
 import Input from "./Input";
+import { useHistory } from "react-router";
+import app from "../Firebase/base";
 
 const fields = signupFields;
 let fieldsState = {};
@@ -9,20 +11,32 @@ let fieldsState = {};
 fields.forEach(field => fieldsState[field.id] = '');
 
 export default function Signup() {
+  const history = useHistory();
   const [signupState, setSignupState] = useState(fieldsState);
 
   const handleChange = (e) => setSignupState({ ...signupState, [e.target.id]: e.target.value });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(signupState)
-    createAccount()
-  }
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log(signupState)
+  //   createAccount()
+  // }
 
   //handle Signup API Integration here
-  const createAccount = () => {
+  const handleSubmit = useCallback(async event => {
+    event.preventDefault();
+    const { email, password } = event.target.elements;
+    try {
+      await app
+        .auth()
+        .createUserWithEmailAndPassword(email.value, password.value);
+      history.push("/");
+    } catch (error) {
+      alert(error);
+    }
+  }, [history]);
 
-  }
+
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
